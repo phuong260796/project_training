@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -50,8 +51,8 @@ public class NewsController {
     }
 
     @PostMapping("/add-update")
-    public ResponseEntity addEndUpdate(@RequestBody News addObject) {
-        if (newsService.addNew(addObject)) {
+    public ResponseEntity addEndUpdate(@RequestBody News addObject, HttpServletRequest ttpServletRequest) {
+        if (newsService.addNew(addObject,ttpServletRequest)) {
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.EXPECTATION_FAILED);
@@ -66,8 +67,8 @@ public class NewsController {
     }
 
     @PostMapping("/delete/{id}")
-    public ResponseEntity delete(@PathVariable Integer id) {
-        if (newsService.delete(id)) {
+    public ResponseEntity delete(@PathVariable Integer id, HttpServletRequest ttpServletRequest) {
+        if (newsService.delete(id, ttpServletRequest)) {
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.EXPECTATION_FAILED);
