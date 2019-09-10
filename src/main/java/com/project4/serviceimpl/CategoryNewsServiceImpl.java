@@ -2,6 +2,7 @@ package com.project4.serviceimpl;
 
 
 import com.project4.Commom.Commom;
+import com.project4.Commom.EncryptMd5;
 import com.project4.DTO.LogActionsDTO;
 import com.project4.entity.CategoryNews;
 import com.project4.entity.LogActions;
@@ -45,12 +46,10 @@ public class CategoryNewsServiceImpl implements CategoryNewsService {
     private EntityManager entityManager;
 
 
-
-
     @Override
     public List<CategoryNews> categoryNew() {
         String sqlString = "select * from category_new cn where cn.active =\"Y\"  ";
-        return entityManager.createNativeQuery(sqlString,CategoryNews.class).getResultList();
+        return entityManager.createNativeQuery(sqlString, CategoryNews.class).getResultList();
     }
 
     @Override
@@ -64,27 +63,26 @@ public class CategoryNewsServiceImpl implements CategoryNewsService {
                 return false;
             }
         }
-        if (categoryNews.getId()!=null){
+        if (categoryNews.getId() != null) {
             Cookie[] cookies = httpServletRequest.getCookies();
             LogActions logActions = new LogActions();
             for (int i = 0; i < cookies.length; i++) {
-                User user = userRepository.findByPassword(cookies[i].getValue());
-                if (user != null) {
+                User user = userRepository.findByUserName(cookies[i].getName());
+                if (cookies[i].getValue().equals(user.getPassword())) {
                     logActions.setUserName(user.getUserName());
                 }
             }
-            if (StringUtils.isEmpty(logActions.getUserName().isEmpty())) {
+            if (StringUtils.isEmpty(logActions.getUserName())) {
                 return false;
             }
-//        User user = userRepository.findByPassword(CookieValue);
 
             logActions.setComputerName(Commom.getComputerName());
             logActions.setUserWindow(Commom.getUserWindow());
 
             Optional<CategoryNews> ctnew = categoryNewsRepositoty.findById(categoryNews.getId());
-            if (ctnew.isPresent()){
+            if (ctnew.isPresent()) {
                 CategoryNews category = ctnew.get();
-                logActions.setActionDescription("sửa danh mục -"+category.getName()+" ==>"+ categoryNews.getName() );
+                logActions.setActionDescription("sửa danh mục -" + category.getName() + " ==>" + categoryNews.getName());
             }
 
             logActions.setFormAction(Commom.updateCategory);
@@ -100,65 +98,66 @@ public class CategoryNewsServiceImpl implements CategoryNewsService {
         Cookie[] cookies = httpServletRequest.getCookies();
         LogActions logActions = new LogActions();
         for (int i = 0; i < cookies.length; i++) {
-            User user = userRepository.findByPassword(cookies[i].getValue());
-            if (user != null) {
+            User user = userRepository.findByUserName(cookies[i].getName());
+            if (cookies[i].getValue().equals(user.getPassword())) {
                 logActions.setUserName(user.getUserName());
             }
         }
-        if (StringUtils.isEmpty(logActions.getUserName().isEmpty())) {
+        if (StringUtils.isEmpty(logActions.getUserName())) {
             return false;
         }
-//        User user = userRepository.findByPassword(CookieValue);
 
-            logActions.setComputerName(Commom.getComputerName());
-            logActions.setUserWindow(Commom.getUserWindow());
+        logActions.setComputerName(Commom.getComputerName());
+        logActions.setUserWindow(Commom.getUserWindow());
 
-            logActions.setActionDescription("thêm danh mục -"+categoryNews.getName());
-            logActions.setFormAction(Commom.index);
-            Date date = new Date();
-            Long createTime = date.getTime();
-            logActions.setTimeAction(createTime);
-            logActionsRepository.save(logActions);
+        logActions.setActionDescription("thêm danh mục -" + categoryNews.getName());
+        logActions.setFormAction(Commom.index);
+        Date date = new Date();
+        Long createTime = date.getTime();
+        logActions.setTimeAction(createTime);
+        logActionsRepository.save(logActions);
 
-            categoryNewsRepositoty.save(categoryNews);
-            return true;
+        categoryNewsRepositoty.save(categoryNews);
+        return true;
 
     }
 
     @Override
-    public Boolean delete(CategoryNews categoryNews, HttpServletRequest httpServletRequest) {
-        if (categoryNews.getId() != null) {
-            List<News> listNews = newsRepository.findAllByCategoryId(categoryNews.getId());
+    public Boolean delete(Integer id, HttpServletRequest httpServletRequest) {
+        if (id != null) {
+            List<News> listNews = newsRepository.findAllByCategoryId(id);
             if (!CollectionUtils.isEmpty(listNews)) {
                 newsRepository.deleteAll(listNews);
             }
             Cookie[] cookies = httpServletRequest.getCookies();
             LogActions logActions = new LogActions();
             for (int i = 0; i < cookies.length; i++) {
-                User user = userRepository.findByPassword(cookies[i].getValue());
-                if (user != null) {
+                User user = userRepository.findByUserName(cookies[i].getName());
+                if (cookies[i].getValue().equals(user.getPassword())) {
                     logActions.setUserName(user.getUserName());
                 }
             }
-            if (StringUtils.isEmpty(logActions.getUserName().isEmpty())) {
+            if (StringUtils.isEmpty(logActions.getUserName())) {
                 return false;
             }
-//        User user = userRepository.findByPassword(CookieValue);
-
             logActions.setComputerName(Commom.getComputerName());
             logActions.setUserWindow(Commom.getUserWindow());
-
-            logActions.setActionDescription("xóa danh mục -"+categoryNews.getName());
+            Optional<CategoryNews> categoryNews = categoryNewsRepositoty.findById(id);
+            logActions.setActionDescription("xóa danh mục -" + categoryNews.get().getName());
             logActions.setFormAction(Commom.index);
             Date date = new Date();
             Long createTime = date.getTime();
             logActions.setTimeAction(createTime);
             logActionsRepository.save(logActions);
-
-            categoryNewsRepositoty.deleteById(categoryNews.getId());
+            categoryNewsRepositoty.deleteById(id);
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Integer checkDelete(Integer id) {
+        return newsRepository.findAllByCategoryId(id).size();
     }
 
     @Override
@@ -177,10 +176,10 @@ public class CategoryNewsServiceImpl implements CategoryNewsService {
     public List<LogActionsDTO> getlog() {
         List<LogActions> logActions = logActionsRepository.findAll();
         List<LogActionsDTO> logActionsDTOS = new ArrayList<>();
-        for (int i=0;i<logActions.size();i++){
+        for (int i = 0; i < logActions.size(); i++) {
             LogActionsDTO logActionsDTO = new LogActionsDTO();
             String dateformat = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date(logActions.get(i).getTimeAction()));
-            logActionsDTO.setId(i+1);
+            logActionsDTO.setId(i + 1);
             logActionsDTO.setActionDescription(logActions.get(i).getActionDescription());
             logActionsDTO.setComputerName(logActions.get(i).getComputerName());
             logActionsDTO.setFormAction(logActions.get(i).getFormAction());
@@ -189,7 +188,26 @@ public class CategoryNewsServiceImpl implements CategoryNewsService {
             logActionsDTO.setTimeAction(dateformat);
             logActionsDTOS.add(logActionsDTO);
         }
-       return logActionsDTOS;
-}
+        return logActionsDTOS;
+    }
 
+
+    @Override
+    public List<LogActionsDTO> getlogByUserName(String userName) {
+        List<LogActions> logActions = logActionsRepository.findAllByUserNameIsLike(userName);
+        List<LogActionsDTO> logActionsDTOS = new ArrayList<>();
+        for (int i = 0; i < logActions.size(); i++) {
+            LogActionsDTO logActionsDTO = new LogActionsDTO();
+            String dateformat = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date(logActions.get(i).getTimeAction()));
+            logActionsDTO.setId(i + 1);
+            logActionsDTO.setActionDescription(logActions.get(i).getActionDescription());
+            logActionsDTO.setComputerName(logActions.get(i).getComputerName());
+            logActionsDTO.setFormAction(logActions.get(i).getFormAction());
+            logActionsDTO.setUserName(logActions.get(i).getUserName());
+            logActionsDTO.setUserWindow(logActions.get(i).getUserWindow());
+            logActionsDTO.setTimeAction(dateformat);
+            logActionsDTOS.add(logActionsDTO);
+        }
+        return logActionsDTOS;
+    }
 }

@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface NewsRepository extends JpaRepository<News,Integer> {
-//    Optional<News> findById(Integer id);
+public interface NewsRepository extends JpaRepository<News, Integer> {
     List<News> findAllByCategoryId(Integer categoryId);
+
     News findByTitle(String title);
 }

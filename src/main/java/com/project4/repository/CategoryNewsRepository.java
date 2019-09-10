@@ -12,10 +12,9 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 /**
- *
  * @author admin
  */
 @Repository
-public interface CategoryNewsRepository extends JpaRepository<CategoryNews,Integer>{
+public interface CategoryNewsRepository extends JpaRepository<CategoryNews, Integer> {
     Optional<CategoryNews> findByName(String name);
 }

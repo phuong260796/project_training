@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface LogActionsRepository extends MongoRepository<LogActions,Integer> {
-
+public interface LogActionsRepository extends MongoRepository<LogActions, Integer> {
+    List<LogActions> findAllByUserNameIsLike(String username);
 }

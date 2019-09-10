@@ -74,19 +74,18 @@ public class NewsServiceImpl implements NewsService {
         if (news1 != null) {
             return false;
         }
-        if (news.getId()!=null){
+        if (news.getId() != null) {
             Cookie[] cookies = ttpServletRequest.getCookies();
             LogActions logActions = new LogActions();
             for (int i = 0; i < cookies.length; i++) {
-                User user = userRepository.findByPassword(cookies[i].getValue());
-                if (user != null) {
+                User user = userRepository.findByUserName(cookies[i].getName());
+                if (cookies[i].getValue().equals(user.getPassword())) {
                     logActions.setUserName(user.getUserName());
                 }
             }
-            if (StringUtils.isEmpty(logActions.getUserName().isEmpty())) {
+            if (StringUtils.isEmpty(logActions.getUserName())) {
                 return false;
             }
-//        User user = userRepository.findByPassword(CookieValue);
 
             logActions.setComputerName(Commom.getComputerName());
             logActions.setUserWindow(Commom.getUserWindow());
@@ -100,7 +99,7 @@ public class NewsServiceImpl implements NewsService {
             Optional<CategoryNews> category = categoryNewsRepository.findById(newsoption.getCategoryId());
             CategoryNews categ = category.get();
 
-            logActions.setActionDescription("sửa tin tức - title :"+newsoption.getTitle()+"=>"+news.getTitle()+"  content:"+newsoption.getContent()+"=>"+news.getContent()+"  createTime"+newsoption.getCreateTime()+"  CategoryName:"+categ.getName()+"=>"+categoryNews.getName());
+            logActions.setActionDescription("sửa tin tức - title :" + newsoption.getTitle() + "=>" + news.getTitle() + "  content:" + newsoption.getContent() + "=>" + news.getContent() + "  createTime" + newsoption.getCreateTime() + "  CategoryName:" + categ.getName() + "=>" + categoryNews.getName());
             logActions.setFormAction(Commom.updateNews);
             Date date = new Date();
             Long createTimee = date.getTime();
@@ -116,22 +115,21 @@ public class NewsServiceImpl implements NewsService {
         Cookie[] cookies = ttpServletRequest.getCookies();
         LogActions logActions = new LogActions();
         for (int i = 0; i < cookies.length; i++) {
-            User user = userRepository.findByPassword(cookies[i].getValue());
-            if (user != null) {
+            User user = userRepository.findByUserName(cookies[i].getName());
+            if (cookies[i].getValue().equals(user.getPassword())) {
                 logActions.setUserName(user.getUserName());
             }
         }
-        if (StringUtils.isEmpty(logActions.getUserName().isEmpty())) {
+        if (StringUtils.isEmpty(logActions.getUserName())) {
             return false;
         }
-//        User user = userRepository.findByPassword(CookieValue);
 
         logActions.setComputerName(Commom.getComputerName());
         logActions.setUserWindow(Commom.getUserWindow());
 
         Optional<CategoryNews> categoryNewsOptional = categoryNewsRepository.findById(news.getCategoryId());
         CategoryNews categoryNews = categoryNewsOptional.get();
-        logActions.setActionDescription("thêm tin tức - title :"+news.getTitle()+"  content:"+news.getContent()+"  CategoryName:"+categoryNews.getName());
+        logActions.setActionDescription("thêm tin tức - title :" + news.getTitle() + "  content:" + news.getContent() + "  CategoryName:" + categoryNews.getName());
         logActions.setFormAction(Commom.addnews);
         Date date = new Date();
         Long createTimee = date.getTime();
@@ -150,15 +148,14 @@ public class NewsServiceImpl implements NewsService {
             Cookie[] cookies = ttpServletRequest.getCookies();
             LogActions logActions = new LogActions();
             for (int i = 0; i < cookies.length; i++) {
-                User user = userRepository.findByPassword(cookies[i].getValue());
-                if (user != null) {
+                User user = userRepository.findByUserName(cookies[i].getName());
+                if (cookies[i].getValue().equals(user.getPassword())) {
                     logActions.setUserName(user.getUserName());
                 }
             }
-            if (StringUtils.isEmpty(logActions.getUserName().isEmpty())) {
+            if (StringUtils.isEmpty(logActions.getUserName())) {
                 return false;
             }
-//        User user = userRepository.findByPassword(CookieValue);
 
             logActions.setComputerName(Commom.getComputerName());
             logActions.setUserWindow(Commom.getUserWindow());
@@ -168,7 +165,7 @@ public class NewsServiceImpl implements NewsService {
 
             Optional<CategoryNews> categoryNewsOptional = categoryNewsRepository.findById(news.getCategoryId());
             CategoryNews categoryNews = categoryNewsOptional.get();
-            logActions.setActionDescription("xóa tin tức - title :"+news.getTitle()+"  content:"+news.getContent()+"  createTime"+news.getCreateTime()+"  CategoryName:"+categoryNews.getName());
+            logActions.setActionDescription("xóa tin tức - title :" + news.getTitle() + "  content:" + news.getContent() + "  createTime" + news.getCreateTime() + "  CategoryName:" + categoryNews.getName());
             logActions.setFormAction(Commom.news);
             Date date = new Date();
             Long createTimee = date.getTime();

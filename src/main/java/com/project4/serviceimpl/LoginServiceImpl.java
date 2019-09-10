@@ -14,13 +14,12 @@ public class LoginServiceImpl implements LoginService {
     private UserRepository userRepository;
 
 
-
     @Override
     public Boolean checkLogin(User user) {
         EncryptMd5 encryptMd5 = new EncryptMd5();
         String EncryptMd5 = encryptMd5.encryMd5(user.getPassword());
-        User use =  userRepository.findByUserName(user.getUserName());
-        if (userRepository.findByUserNameAndAndPassword(user.getUserName(),EncryptMd5)!=null){
+        User use = userRepository.findByUserName(user.getUserName());
+        if (userRepository.findByUserNameAndAndPassword(user.getUserName(), EncryptMd5) != null) {
 
             return true;
         }
@@ -32,7 +31,7 @@ public class LoginServiceImpl implements LoginService {
         EncryptMd5 encryptMd5 = new EncryptMd5();
         String EncryptMd5 = encryptMd5.encryMd5(user.getPassword());
         user.setPassword(EncryptMd5);
-        if (userRepository.findByUserName(user.getUserName())!=null){
+        if (userRepository.findByUserName(user.getUserName()) != null) {
             return false;
         }
         userRepository.save(user);

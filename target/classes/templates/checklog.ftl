@@ -9,6 +9,12 @@
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+    <script>
+        function search() {
+            var valueImput = document.getElementById("paramSearch").value;
+            window.location="http://localhost:8181/check-log/"+valueImput;
+        }
+    </script>
 </head>
 <style>
 
@@ -127,6 +133,11 @@
 <div class="container">
     <div class="table-wrapper">
 
+        <div class="form-inline">
+            <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0"
+                   id="paramSearch" name="customerName" value="${(inputSearch)!}" placeholder="imput search"/>
+
+            <button type="submit"  onclick="search()" class="btn btn-primary" style="margin:15px;">Search</button>
         <table class="table table-striped table-hover table-bordered">
             <thead>
             <tr>

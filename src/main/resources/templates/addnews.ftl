@@ -42,8 +42,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <body>
-<div></div><div></div><!-- Small modal -->
-<a class="btn btn-primary" href='http://localhost:8181/login' type="button" data-target=".bs-example-modal-sm" data-toggle="modal">Logout</a>
+<div></div>
+<div></div><!-- Small modal -->
+<a class="btn btn-primary" href='http://localhost:8181/login' type="button" data-target=".bs-example-modal-sm"
+   data-toggle="modal">Logout</a>
 
 <div tabindex="-1" class="modal bs-example-modal-sm" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-sm">
@@ -75,10 +77,7 @@
         <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="active"
                name="active" <#--placeholder="Active" -->>
     </div>
-    <#--<div class="form-group">
-        <label for="createTime">create time</label>
-        <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="createTime" name="createTime" &lt;#&ndash;placeholder="createTime"&ndash;&gt; >
-    </div>-->
+
     <a class="btn btn-primary" onclick="add()">Add News</a>
 </div>
 </body>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/login.css">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <script src="../js/login.js"></script>
+</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<body ng-app="login">
+<div id="login" ng-controller="loginController">
+    <div class="container">
+        <div id="login-row" class="row justify-content-center align-items-center">
+            <div id="login-column" class="col-md-6">
+                <div id="login-box" class="col-md-12">
+                    <div id="login-form" class="form" >
+                        <h3 class="text-center text-info">Login</h3>
+                        <div class="form-group">
+                            <label  class="text-info">Username:</label><br>
+                            <input type="text" name="username" ng-model="inputParam.userName" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="text-info">Password:</label><br>
+                            <input type="password" name="password" ng-model="inputParam.password" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <br>
+                            <input type="submit" name="submit" class="btn btn-info btn-md" ng-click="loginFunction(inputParam)"  value="submit">
+                        </div>
+                        <div id="register-link" class="text-right">
+                            <a href="http://localhost:8181/register"  class="text-info">Register here</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
+
+

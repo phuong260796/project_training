@@ -58,7 +58,6 @@
         <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="active" name="active" placeholder="Active"
                value="${categoryNews.active}">
     </div>
-    <button type="submit" onclick="Updatedata(${categoryNews.id})" class="btn btn-primary">Update</button>
 </div>
 </body>
 </html>

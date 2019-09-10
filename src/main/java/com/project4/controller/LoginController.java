@@ -15,15 +15,13 @@ public class LoginController {
     private LoginService loginService;
 
     @GetMapping("/login")
-    public ModelAndView login(HttpServletResponse response,HttpServletRequest request){
+    public ModelAndView login(HttpServletResponse response, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("loginn");
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
-            for(int i = 0; i< cookies.length ; i++){
-                if(cookies[i].getName().equals("EncryptMd5")){
-                    //Cookie cookie = new Cookie("user", cookies[i].getValue());
-                    //cookie.setMaxAge(0);
-                    //response.addCookie(cookie);
+            for (int i = 0; i < cookies.length; i++) {
+                if (cookies[i].getName().equals("EncryptMd5")) {
                     cookies[i].setMaxAge(0);
                     cookies[i].setHttpOnly(true);
                     response.addCookie(cookies[i]);
@@ -35,28 +33,28 @@ public class LoginController {
     }
 
     @GetMapping("/register")
-    public ModelAndView register(){
+    public ModelAndView register() {
         ModelAndView modelAndView = new ModelAndView();
 
-        modelAndView.setViewName("register");
+        modelAndView.setViewName("registerr");
         return modelAndView;
     }
 
     @PostMapping("/check-login")
-    private Boolean checkLogin(@RequestBody  User user,HttpServletResponse response){
-        if(loginService.checkLogin(user)){
+    private Boolean checkLogin(@RequestBody User user, HttpServletResponse response) {
+        if (loginService.checkLogin(user)) {
             EncryptMd5 encryptMd5 = new EncryptMd5();
             String EncryptMd5 = encryptMd5.encryMd5(user.getPassword());
-            Cookie cookie = new Cookie("EncryptMd5",EncryptMd5);
+            Cookie cookie = new Cookie(user.getUserName(), EncryptMd5);
             response.addCookie(cookie);
-           return true;
+            return true;
         }
         return false;
     }
 
-    @PostMapping("/register")
-    private Boolean register(@RequestBody  User user){
-        if(loginService.register(user)){
+    @PostMapping("/register-check")
+    private Boolean register(@RequestBody User user) {
+        if (loginService.register(user)) {
             return true;
         }
         return false;
@@ -64,10 +62,17 @@ public class LoginController {
 
 
     @GetMapping("/ck")
-    public String đaa(@CookieValue String EncryptMd5){
+    public String đaa(@CookieValue String EncryptMd5) {
 
         return EncryptMd5;
     }
 
+    @GetMapping("/indexx")
+    public ModelAndView angular() {
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("indexx");
+        return modelAndView;
+    }
 
 }

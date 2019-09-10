@@ -8,7 +8,10 @@ import java.util.List;
 
 public interface NewsService {
     List<NewsDTO> getNewByCategoryId(Integer id);
+
     Boolean addNew(News news, HttpServletRequest ttpServletRequest);
+
     Boolean delete(Integer id, HttpServletRequest ttpServletRequest);
+
     News findById(Integer id);
 }
